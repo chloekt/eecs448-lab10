@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Delete a Post</title>
+    <h1 style='text-align: center';>Delete a Post</h1>
+  </head>
+  <body>
+    <center>
+      <form method="POST" action="DeletePost.php">
+        <?php
+        error_reporting(E_ALL);
+        ini_set("display_errors", 1);
+
+        $mysqli = new mysqli("mysql.eecs.ku.edu", "chloethornton", "me3eit9r", "chloethornton");
+        if($mysqli->connect_errno){
+          printf("connection failed:%s\n" . $mysqli->connect_error);
+          exit();
+        }
+
+        $query = "SELECT * FROM Posts";
+
+        if($result = $mysqli->query($query)){
+            echo "<table style='text-align: center'; align = 'center' border = '1';>";
+              echo "<tr>";
+                echo "<th>Post ID</th>";
+                echo "<th>Authors</th>";
+                echo "<th>Posts</th>";
+                echo "<th>Delete?</th>";
+              echo "</tr>";
+
+            while($row = $result->fetch_assoc()){
+              echo "<tr>";
+                echo "<td>" .$row["post_id"]. "</td>";
+                echo "<td>" .$row["author_id"]. "</td>";
+                echo "<td>" .$row["content"]. "</td>";
+                $temp = $row['post_id'];
+                echo "<td><input type='checkbox' name='delete[]' value='$temp'></td>";
+              echo "</tr>";
+            }
+            echo "</table>";
+          }
+        ?>
+        <br>
+        Submit to Delete Selected Posts: <input type="submit">
+      </form>
+    </center>
+  </body>
+</html>
